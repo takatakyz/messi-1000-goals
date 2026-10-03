@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Messi 1000 Goals｜メッシ1000ゴールへの道</title>
+<meta name="description" content="リオネル・メッシの通算1000ゴール達成までを追跡する日本語ファンサイト。現在のゴール数、残りゴール、達成率、最新ゴールを掲載。">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Messi 1000 Goals｜メッシ1000ゴールへの道">
+<meta property="og:description" content="メッシの1000ゴールまであと何ゴール？">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://YOUR-DOMAIN.example/">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+<nav><a class="logo" href="./">MESSI 1000</a><div><a href="#data">データ</a><a href="#history">歩み</a><a href="about.html">このサイト</a></div></nav>
+<div class="heroInner">
+<p class="eyebrow">LIONEL MESSI · ARGENTINA 🇦🇷</p>
+<h1>1000 GOALS<br><span>COUNTDOWN</span></h1>
+<p class="lead">メッシは1,000ゴールまであと何ゴール？</p>
+</div>
+</header>
+
+<main>
+<section class="container">
+<div class="card counter">
+<div class="small">通算シニアゴール</div>
+<div class="number" id="goals">931</div>
+<div class="target">/ 1,000</div>
+<div class="bar"><i id="bar"></i></div>
+<div class="counterGrid">
+<div><span>あと</span><strong id="remaining">69</strong><em>ゴール</em></div>
+<div><span>達成率</span><strong id="percent">93.1%</strong></div>
+<div><span>次の節目</span><strong id="milestone">950</strong><em>ゴール</em></div>
+</div>
+<p class="updated">最終更新：<span id="updated">2026年10月3日</span></p>
+</div>
+
+<!-- AdSense: 審査承認後、この1枠だけ広告コードに置換 -->
+<div class="adbox" aria-label="広告"><span>ADVERTISEMENT</span></div>
+
+<div class="grid" id="data">
+<section class="card">
+<h2>2026シーズン</h2>
+<div class="stats">
+<div><span>出場</span><b id="apps">41</b><small>試合</small></div>
+<div><span>ゴール</span><b id="seasonGoals">35</b><small>ゴール</small></div>
+<div><span>アシスト</span><b id="assists">19</b><small>アシスト</small></div>
+</div>
+<p class="source">出典：<a href="https://footystats.org/jp/players/argentina/lionel-messi" target="_blank" rel="noopener">FootyStats メッシ選手ページ</a></p>
+</section>
+
+<section class="card">
+<h2>1000ゴールまで</h2>
+<div class="milestones">
+<div><b>950</b><span id="m950">あと19</span></div>
+<div><b>975</b><span id="m975">あと44</span></div>
+<div><b>999</b><span id="m999">あと68</span></div>
+<div class="gold"><b>1000</b><span>GOAL!</span></div>
+</div>
+</section>
+</div>
+
+<section class="card timeline" id="history">
+<h2>メッシ1000ゴールへの歩み</h2>
+<p>このサイトでは、通算ゴール数を1000という目標に対する進捗として表示します。統計サービスごとに親善試合等の集計基準が異なる場合があるため、ゴール数の定義と参照元を明記します。</p>
+<div class="line"><b>900</b><span>900ゴール突破</span></div>
+<div class="line active"><b id="current">931</b><span>現在地</span></div>
+<div class="line"><b>950</b><span>次の大きな節目</span></div>
+<div class="line"><b>1000</b><span>THE MILESTONE</span></div>
+</section>
+
+<section class="card faq">
+<h2>よくある質問</h2>
+<h3>このサイトは公式ですか？</h3><p>いいえ。メッシ本人、AFA、所属クラブ、adidas、FootyStats等とは関係のない独立したファンサイトです。</p>
+<h3>ゴール数はどこから取得していますか？</h3><p>シーズンデータはFootyStats等の公開統計を参照します。通算ゴールは集計基準を確認したうえで更新します。</p>
+<h3>ゴール後すぐ更新されますか？</h3><p>データの確認後に更新する運用を想定しています。将来的にはAPIを利用した自動更新にも対応できます。</p>
+</section>
+</section>
+</main>
+<footer><div class="container foot"><b>Messi 1000 Goals</b><div><a href="about.html">このサイト</a><a href="privacy.html">プライバシー</a><a href="contact.html">お問い合わせ</a></div><p>Independent fan-made website. Not affiliated with Lionel Messi or any rights holder.</p></div></footer>
+<script src="app.js"></script>
+</body>
+</html>
