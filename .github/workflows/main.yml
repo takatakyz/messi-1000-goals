@@ -1,0 +1,130 @@
+name: Update Messi Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get Messi data from API-Football
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          import urllib.parse
+
+          API_KEY = __import__("os").environ["API_FOOTBALL_KEY"]
+
+          url = "https://v3.football.api-sports.io/players?" + urllib.parse.urlencode({
+              "search": "Messi",
+              "season": "2026"
+          })
+
+          req = urllib.request.Request(
+              url,
+              headers={"x-apisports-key": API_KEY}
+          )
+
+          with urllib.request.urlopen(req) as r:
+              data = json.load(r)
+
+          if not data.get("response"):
+              raise RuntimeError("MessiのデータがAPIから取得できませんでした")
+
+          players = data["response"]
+
+          messi = None
+          for p in players:
+              if p.get("player", {}).get("name") == "Lionel Messi":
+                  messi = p
+                  break
+
+          if messi is None:
+              raise RuntimeError("Lionel Messiが見つかりませんでした")
+
+          stats = messi.get("statistics", [])
+
+          apps = 0
+          goals = 0
+          assists = 0
+
+          for s in stats:
+              games = s.get("games", {})
+              g = s.get("goals", {})
+
+              apps += games.get("appearences") or 0
+              goals += g.get("total") or 0
+              assists += g.get("assists") or 0
+
+          with open("api_result.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "apps": apps,
+                  "goals": goals,
+                  "assists": assists
+              }, f, ensure_ascii=False, indent=2)
+
+          print("Messi 2026")
+          print("Apps:", apps)
+          print("Goals:", goals)
+          print("Assists:", assists)
+          PY
+
+      - name: Update data.json
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone, timedelta
+
+          JST = timezone(timedelta(hours=9))
+
+          with open("data.json", encoding="utf-8") as f:
+              data = json.load(f)
+
+          with open("api_result.json", encoding="utf-8") as f:
+              api = json.load(f)
+
+          old_goals = data["season"]["goals"]
+          new_goals = api["goals"]
+
+          # 今回増えたゴール分だけ通算ゴールへ加算
+          if new_goals > old_goals:
+              data["careerGoals"] += new_goals - old_goals
+
+          data["season"]["apps"] = api["apps"]
+          data["season"]["goals"] = new_goals
+          data["season"]["assists"] = api["assists"]
+
+          data["updated"] = datetime.now(JST).strftime("%Y年%-m月%-d日")
+
+          with open("data.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+
+          print(json.dumps(data, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data.json
+
+          if git diff --cached --quiet; then
+            echo "変更なし"
+          else
+            git commit -m "Update Messi statistics"
+            git push
+          fi
